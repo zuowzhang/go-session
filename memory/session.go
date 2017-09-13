@@ -5,6 +5,7 @@ import (
 	"session"
 	"sync"
 	"container/list"
+	"log"
 )
 
 var memoryProvider = &MemoryProvider{
@@ -13,6 +14,7 @@ var memoryProvider = &MemoryProvider{
 }
 
 func init() {
+	log.Printf("init session provider memory\n")
 	session.RegisterProvider(session.PROVIDER_MEMORY, memoryProvider)
 }
 
