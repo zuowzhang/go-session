@@ -90,9 +90,10 @@ func (provider *MemoryProvider)Gc(maxLifeTime int64) {
 		if element == nil {
 			break
 		}
-		if element.Value.(*MemoryStore).lastTimeAccessed + maxLifeTime < time.Now().Unix() {
+		store := element.Value.(*MemoryStore)
+		if store.lastTimeAccessed.Unix() + maxLifeTime < time.Now().Unix() {
 			provider.sessionList.Remove(element)
-			delete(provider.sessions, element.Value.(*MemoryStore).id)
+			delete(provider.sessions, store.id)
 		} else {
 			break
 		}
@@ -107,5 +108,4 @@ func (provider *MemoryProvider)update(sid string) {
 		element.Value.(*MemoryStore).lastTimeAccessed = time.Now()
 		provider.sessionList.MoveToFront(element)
 	}
-	return nil
 }
