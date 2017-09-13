@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"net/url"
 	"time"
-	"fmt"
 )
 
 type Provider interface {
@@ -32,6 +31,9 @@ type SessionMgr struct {
 	provider    Provider
 }
 
+const PROVIDER_MEMORY string = "memory"
+const PROVIDER_REDIS string = "redis"
+
 var providers = make(map[string]Provider)
 
 var Logger = logProxy{}
@@ -49,12 +51,10 @@ func RegisterProvider(providerName string, provider Provider) {
 	}
 	Logger.D("RegisterProvider %s\n", providerName)
 	providers[providerName] = provider
-	fmt.Println("provider len() = ", len(providers))
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
 	provider, ok := providers[providerName]
-	fmt.Println(len(providers))
 	if !ok {
 		Logger.E("provider %s not exists\n", providerName)
 		return nil, errors.New("unknown session provider")

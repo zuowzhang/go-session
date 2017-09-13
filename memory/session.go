@@ -13,7 +13,7 @@ var memoryProvider = &MemoryProvider{
 }
 
 func init() {
-	session.RegisterProvider("memory", memoryProvider)
+	session.RegisterProvider(session.PROVIDER_MEMORY, memoryProvider)
 }
 
 type MemoryStore struct {
