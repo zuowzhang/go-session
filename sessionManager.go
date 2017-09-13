@@ -34,10 +34,10 @@ type SessionMgr struct {
 
 var providers = make(map[string]Provider)
 
-var logProxy = LogProxy{}
+var Logger = logProxy{}
 
 func InitLog(log Log) {
-	logProxy.impl = log
+	Logger.impl = log
 }
 
 func RegisterProvider(providerName string, provider Provider) {
@@ -47,7 +47,7 @@ func RegisterProvider(providerName string, provider Provider) {
 	if _, ok := providers[providerName]; ok {
 		panic("duplicated registe session provider")
 	}
-	logProxy.D("RegisterProvider %s\n", providerName)
+	Logger.D("RegisterProvider %s\n", providerName)
 	providers[providerName] = provider
 	fmt.Println("provider len() = ", len(providers))
 }
@@ -56,7 +56,7 @@ func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*Session
 	provider, ok := providers[providerName]
 	fmt.Println(len(providers))
 	if !ok {
-		logProxy.E("provider %s not exists\n", providerName)
+		Logger.E("provider %s not exists\n", providerName)
 		return nil, errors.New("unknown session provider")
 	}
 	mgr := &SessionMgr{
