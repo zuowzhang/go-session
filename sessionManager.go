@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"time"
 	"log"
+	"fmt"
 )
 
 type Provider interface {
@@ -52,10 +53,12 @@ func RegisterProvider(providerName string, provider Provider) {
 	}
 	providers[providerName] = provider
 	log.Printf("RegisterProvider %s, providers.len() = %d--%v--%x\n", providerName, len(providers), providers, providers)
+	fmt.Println("++", providers)
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
 	log.Printf("lookup provider %s, providers.len() = %d--%v--%x\n", providerName, len(providers), providers, providers)
+	fmt.Println("--", providers)
 	provider, ok := providers[providerName]
 	if !ok {
 		Logger.E("provider %s not exists\n", providerName)
