@@ -54,6 +54,7 @@ func RegisterProvider(name string, provider Provider) {
 	Providers[name] = provider
 	log.Printf("RegisterProvider#providers.len() = %d\n", len(Providers))
 	log.Printf("provider addr#%x\n", unsafe.Pointer(&Providers))
+	NewSessionMgr(name, "internal-cookie", 3600)
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
