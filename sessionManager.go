@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"time"
 	"log"
+	"unsafe"
 )
 
 type Provider interface {
@@ -51,14 +52,12 @@ func RegisterProvider(name string, provider Provider) {
 		panic("duplicated registe session provider")
 	}
 	Providers[name] = provider
-	for i := 0; i < 10; i++ {
-		time.Sleep(time.Second)
-		log.Printf("RegisterProvider#providers.len() = %d\n", len(Providers))
-	}
+	log.Printf("RegisterProvider#providers.len() = %d\n", len(Providers))
+	log.Printf("provider addr#%x\n", unsafe.Pointer(&Providers))
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
-	log.Printf("NewSessionMgr#providers.len() = %d\n", len(Providers))
+	log.Printf("NewSessionMgr#providers.len() = %d, addr#%x\n", len(Providers), unsafe.Pointer(&Providers))
 	provider, ok := Providers[providerName]
 	if !ok {
 		Logger.E("provider %s not exists\n", providerName)
