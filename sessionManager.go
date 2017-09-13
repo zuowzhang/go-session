@@ -51,12 +51,13 @@ func RegisterProvider(name string, provider Provider) {
 		panic("duplicated registe session provider")
 	}
 	Providers[name] = provider
-	log.Printf("RegisterProvider#providers.len() = %d\n", len(Providers))
-	NewSessionMgr(name, "test-cookie", 3600)
+	for i := 0; i < 10; i++ {
+		time.Sleep(time.Second)
+		log.Printf("RegisterProvider#providers.len() = %d\n", len(Providers))
+	}
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
-	time.Sleep(1 * time.Second)
 	log.Printf("NewSessionMgr#providers.len() = %d\n", len(Providers))
 	provider, ok := Providers[providerName]
 	if !ok {
