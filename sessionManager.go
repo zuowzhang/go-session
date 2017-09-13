@@ -56,6 +56,7 @@ func RegisterProvider(name string, provider Provider) {
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
+	time.Sleep(1 * time.Second)
 	log.Printf("NewSessionMgr#providers.len() = %d\n", len(providers))
 	provider, ok := providers[providerName]
 	if !ok {
