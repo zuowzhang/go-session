@@ -43,19 +43,20 @@ func InitLog(log Log) {
 	Logger.impl = log
 }
 
-func RegisterProvider(providerName string, provider Provider) {
+func RegisterProvider(name string, provider Provider) {
 	if provider == nil {
 		panic("provider is nil")
 	}
-	if _, ok := providers[providerName]; ok {
+	if _, ok := providers[name]; ok {
 		panic("duplicated registe session provider")
 	}
-	providers[providerName] = provider
-	log.Printf("RegisterProvider %s, providers.len() = %d--%#v--%x\n", providerName, len(providers), providers, providers)
+	providers[name] = provider
+	log.Printf("RegisterProvider#providers.len() = %d\n", len(providers))
+	NewSessionMgr(name, "test-cookie", 3600)
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
-	log.Printf("lookup provider %s, providers.len() = %d--%#v--%x\n", providerName, len(providers), providers, providers)
+	log.Printf("NewSessionMgr#providers.len() = %d\n", len(providers))
 	provider, ok := providers[providerName]
 	if !ok {
 		Logger.E("provider %s not exists\n", providerName)
