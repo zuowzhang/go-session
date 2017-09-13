@@ -2,7 +2,7 @@ package memory
 
 import (
 	"time"
-	"../"
+	".."
 	"sync"
 	"container/list"
 	"log"
