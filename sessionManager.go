@@ -35,7 +35,7 @@ type SessionMgr struct {
 const PROVIDER_MEMORY string = "memory"
 const PROVIDER_REDIS string = "redis"
 
-var providers = make(map[string]Provider)
+var Providers = make(map[string]Provider)
 
 var Logger = logProxy{}
 
@@ -47,18 +47,18 @@ func RegisterProvider(name string, provider Provider) {
 	if provider == nil {
 		panic("provider is nil")
 	}
-	if _, ok := providers[name]; ok {
+	if _, ok := Providers[name]; ok {
 		panic("duplicated registe session provider")
 	}
-	providers[name] = provider
-	log.Printf("RegisterProvider#providers.len() = %d\n", len(providers))
+	Providers[name] = provider
+	log.Printf("RegisterProvider#providers.len() = %d\n", len(Providers))
 	NewSessionMgr(name, "test-cookie", 3600)
 }
 
 func NewSessionMgr(providerName, cookieName string, maxLifeTime int64) (*SessionMgr, error) {
 	time.Sleep(1 * time.Second)
-	log.Printf("NewSessionMgr#providers.len() = %d\n", len(providers))
-	provider, ok := providers[providerName]
+	log.Printf("NewSessionMgr#providers.len() = %d\n", len(Providers))
+	provider, ok := Providers[providerName]
 	if !ok {
 		Logger.E("provider %s not exists\n", providerName)
 		return nil, errors.New("unknown session provider")
